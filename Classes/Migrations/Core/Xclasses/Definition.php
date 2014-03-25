@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Michiel Roos <michiel@maxserv.nl>
+ *  (c) 2014 Tizian Schmidlin <st@cabag.ch>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -23,24 +23,44 @@
  ***************************************************************/
 
 /**
- * Interface Tx_Smoothmigration_Domain_Interface_MigrationProcessor
+ * Class Tx_Smoothmigration_Migrations_Core_RequireOnceInExtension_Definition
  *
- * @author Michiel Roos
+ * @author Tizian Schmidlin
  */
-interface Tx_Smoothmigration_Domain_Interface_MigrationProcessor extends Tx_Smoothmigration_Domain_Interface_Processor {
+class Tx_Smoothmigration_Migrations_Core_Xclasses_Definition extends Tx_Smoothmigration_Migrations_AbstractMigrationDefinition {
 
 	/**
-	 * @param Tx_Smoothmigration_Domain_Interface_Migration $migration
+	 * @return Tx_Smoothmigration_Domain_Interface_MigrationProcessor
 	 */
-	public function __construct(Tx_Smoothmigration_Domain_Interface_Migration $migration);
+	public function getProcessor() {
+		return $this->objectManagager->get('Tx_Smoothmigration_Migrations_Core_Xclasses_Processor', $this);
+	}
 
-    /**
-     * Set the MigrationMessageManager
-     *
-     * @param Tx_Smoothmigration_Migrations_MigrationMessageManager $manager
-     * @return void
-     */
-    public function setMigrationMessageManager(Tx_Smoothmigration_Migrations_MigrationMessageManager $manager);
+	/**
+	 * @return void
+	 */
+	public function getResultAnalyzer() {
+	}
+
+	/**
+	 * Returns an MigrationIdentifier
+	 * Has to be unique
+	 *
+	 * @return string
+	 */
+	public function getIdentifier() {
+		return 'typo3-core-code-xclasses';
+	}
+
+	/**
+	 * Get a key to identify the migration for CLI usage (a short version of the identifier)
+	 *
+	 * @return string
+	 */
+	public function getCliKey() {
+		return 'xclasses';
+	}
+
 }
 
 ?>
