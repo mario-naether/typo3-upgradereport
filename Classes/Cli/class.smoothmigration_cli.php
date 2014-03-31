@@ -25,7 +25,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once(PATH_t3lib . 'class.t3lib_cli.php');
 
 	// I can haz color / use unicode?
 if (DIRECTORY_SEPARATOR !== '\\') {
@@ -55,15 +54,25 @@ class tx_smoothmigration_cli extends t3lib_cli {
 	 * @var Tx_Smoothmigration_Domain_Repository_IssueRepository
 	 */
 	protected $issueRepository;
+	
+	
+	/**
+	 * The extbase object manager
+	 *
+	 * @var Tx_Extbase_Object_ObjectManager
+	 */
+	protected $objectManager;
 
 	/**
 	 * Constructor
 	 */
 	public function __construct() {
 			// Running parent class constructor
-		parent::t3lib_cli();
+		parent::__construct();
 
-		$this->issueRepository = t3lib_div::makeInstance('Tx_Smoothmigration_Domain_Repository_IssueRepository');
+		/*@var Tx_Extbase_Object_ObjectManager */
+		$this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+		$this->issueRepository = $this->objectManager->get('Tx_Smoothmigration_Domain_Repository_IssueRepository');
 
 			// Adding options to help archive:
 		$this->cli_options = array();
@@ -141,6 +150,11 @@ class tx_smoothmigration_cli extends t3lib_cli {
 	 * @return void
 	 */
 	private function executeAllChecks() {
+		
+		$this->configurationManager = $this->objectManager->get('Tx_Extbase_Configuration_ConfigurationManager');
+		$typoScriptConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+		$this->configurationManager->setConfiguration($typoScriptConfiguration['module.']['tx_smoothmigration.']);
+		
 		$issues = 0;
 		$registry = Tx_Smoothmigration_Service_Check_Registry::getInstance();
 		$checks = $registry->getActiveChecks();
@@ -153,6 +167,10 @@ class tx_smoothmigration_cli extends t3lib_cli {
 			$issues = $issues + count($processor->getIssues());
 			$this->infoMessage('Check: ' . $singleCheck->getTitle() . ' has ' . count($processor->getIssues()) . ' issues ');
 		}
+		
+		$persistenceManger = $this->objectManager->get('Tx_Extbase_Persistence_Manager');
+		$persistenceManger->persistAll();
+		
 		$this->infoMessage(LF . 'Total Issues : ' . $issues);
 	}
 
@@ -176,6 +194,7 @@ class tx_smoothmigration_cli extends t3lib_cli {
 			return;
 		}
 
+		
 		/** @var Tx_Smoothmigration_Migrations_AbstractMigrationProcessor $processor */
 		$processor = $migrationTask->getProcessor();
 		$processor->setCliDispatcher($this);
