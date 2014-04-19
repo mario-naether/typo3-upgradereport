@@ -41,9 +41,13 @@ class Tx_Smoothmigration_Service_FileLocatorService {
 		$positions = array();
 		foreach (new SplFileObject($haystackFilePath) as $lineNumber => $lineContent) {
 			$matches = array();
-			if (preg_match('/' . trim($searchPattern, '/') . '/' . ($this->caseSensitive ? 'i' : ''), $lineContent, $matches)) {
-				$positions[] =  array('line' => $lineNumber + 1, 'match' => $matches[0]);
+            $isMached = preg_match_all('/' . trim($searchPattern, '/') . '/' . ($this->caseSensitive ? 'i' : ''), $lineContent, $matches);
+			if ($isMached) {
+                foreach($matches[0] as $match) {
+                    $positions[] =  array('line' => $lineNumber + 1, 'match' => $match);
+                }
 			}
+
 		}
 		return $positions;
 	}
