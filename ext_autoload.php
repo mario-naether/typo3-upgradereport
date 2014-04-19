@@ -66,6 +66,8 @@ return array(
 	'tx_smoothmigration_migrations_abstractmigrationprocessor' => $extensionClassesPath . 'Migrations/AbstractMigrationProcessor.php',
 	'tx_smoothmigration_migrations_core_calltodeprecatedstaticmethods_definition' => $extensionClassesPath . 'Migrations/Core/CallToDeprecatedStaticMethods/Definition.php',
 	'tx_smoothmigration_migrations_core_calltodeprecatedstaticmethods_processor' => $extensionClassesPath . 'Migrations/Core/CallToDeprecatedStaticMethods/Processor.php',
+    'tx_smoothmigration_migrations_core_calltodeprecatedclasses_definition' => $extensionClassesPath . 'Migrations/Core/CallToDeprecatedClasses/Definition.php',
+    'tx_smoothmigration_migrations_core_calltodeprecatedclasses_processor' => $extensionClassesPath . 'Migrations/Core/CallToDeprecatedClasses/Processor.php',
 	'tx_smoothmigration_migrations_core_requireonceinextensions_definition' => $extensionClassesPath . 'Migrations/Core/RequireOnceInExtensions/Definition.php',
 	'tx_smoothmigration_migrations_core_requireonceinextensions_processor' => $extensionClassesPath . 'Migrations/Core/RequireOnceInExtensions/Processor.php',
 	'tx_smoothmigration_migrations_database_utf8_definition' => $extensionClassesPath . 'Migrations/Database/Utf8/Definition.php',

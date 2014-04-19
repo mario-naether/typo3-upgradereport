@@ -10,11 +10,11 @@ class Tx_Smoothmigration_Checks_Core_CallToDeprecatedClasses_Processor extends T
 {
 
     protected $deprecatedClassnameRegex = array(
-        '\s(Tx_)(.*)(_Domain_Repository_|_Domain_Model_|_Controller_)(\w+)',
-        '\sTx_Extbase_(\w+)',
-        '\sTx_Fluid_(\w+)',
-        '\st3lib_(\w+)',
-        '\stslib_(\w+)'
+        '(Tx_)(\w+)(_Domain_Repository_|_Domain_Model_|_Controller_)(\w+)',
+        'Tx_Extbase_(\w+)',
+        'Tx_Fluid_(\w+)',
+        't3lib_(\w+)',
+        'tslib_(\w+)'
     );
 
     /**
@@ -33,8 +33,12 @@ class Tx_Smoothmigration_Checks_Core_CallToDeprecatedClasses_Processor extends T
         }
     }
 
+    /**
+     * Generate RegEx to search deprecated class names
+     *
+     * @return string
+     */
     protected function generateRegularExpression() {
         return implode('|', $this->deprecatedClassnameRegex);
-        #return '(Tx_)(.*)(_Domain_Repository_|_Domain_Model_|_Controller_)(\w+)|Tx_Extbase_(\w+)|Tx_Fluid_(\w+)';
     }
 }
